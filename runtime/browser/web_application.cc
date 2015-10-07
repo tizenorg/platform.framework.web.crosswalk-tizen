@@ -34,7 +34,6 @@
 #include "common/resource_manager.h"
 #include "common/app_db.h"
 #include "common/profiler.h"
-
 #include "runtime/browser/native_window.h"
 #include "runtime/browser/web_view.h"
 #include "runtime/browser/vibration_manager.h"
@@ -47,7 +46,6 @@
 #endif
 
 namespace runtime {
-
 namespace {
 // TODO(sngn.lee) : It should be declare in common header
 const char* kKeyNameBack = "back";
@@ -225,7 +223,8 @@ WebApplication::WebApplication(
   std::unique_ptr<char, decltype(std::free)*>
     path {app_get_data_path(), std::free};
   app_data_path_ = path.get();
-
+  splash_screen_.reset(new SplashScreen(window_,
+                                  app_data_->splash_screen_info()));
   resource_manager_.reset(
       new common::ResourceManager(app_data_.get(), locale_manager_.get()));
   resource_manager_->set_base_resource_path(
@@ -658,11 +657,14 @@ void WebApplication::OnLoadStart(WebView* /*view*/) {
 }
 void WebApplication::OnLoadFinished(WebView* /*view*/) {
   LOGGER(DEBUG) << "LoadFinished";
+
 }
 void WebApplication::OnRendered(WebView* /*view*/) {
   STEP_PROFILE_END("URL Set -> Rendered");
   STEP_PROFILE_END("Start -> Launch Completed");
   LOGGER(DEBUG) << "Rendered";
+  splash_screen_->HideSplashScreen();
+
 }
 
 void WebApplication::LaunchInspector(common::AppControl* appcontrol) {

@@ -23,6 +23,7 @@
 #include <functional>
 
 #include "runtime/browser/web_view.h"
+#include "runtime/browser/splash_screen.h"
 
 class Ewk_Context;
 
@@ -115,6 +116,7 @@ class WebApplication : public WebView::EventListener {
   std::string appid_;
   std::string app_data_path_;
   std::list<WebView*> view_stack_;
+  std::unique_ptr<SplashScreen> splash_screen_;
   std::unique_ptr<common::LocaleManager> locale_manager_;
   std::unique_ptr<common::ApplicationData> app_data_;
   std::unique_ptr<common::ResourceManager> resource_manager_;

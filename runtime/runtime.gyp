@@ -28,6 +28,8 @@
         'browser/web_view_impl.cc',
         'browser/popup.h',
         'browser/popup.cc',
+        'browser/splash_screen.h',
+        'browser/splash_screen.cc',
         'browser/popup_string.h',
         'browser/popup_string.cc',
         'browser/vibration_manager.h',
@@ -42,6 +44,8 @@
         'packages': [
           'ecore',
           'ecore-wayland',
+          'manifest-parser',
+          'manifest-handlers',
           'elementary',
           'efl-extension',
           'chromium-efl',
