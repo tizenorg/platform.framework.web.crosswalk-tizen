@@ -226,7 +226,10 @@ WebApplication::WebApplication(
   std::unique_ptr<char, decltype(std::free)*>
     path {app_get_data_path(), std::free};
   app_data_path_ = path.get();
-
+  LOGGER(ERROR) << "paht is " << path.get();
+  splash_screen_.reset(new SplashScreen(window_,
+                                  app_data_->splash_screen_info(),
+                                        app_data_->application_path()));
   resource_manager_.reset(
       new common::ResourceManager(app_data_.get(), locale_manager_.get()));
   resource_manager_->set_base_resource_path(
@@ -674,6 +677,8 @@ void WebApplication::OnRendered(WebView* /*view*/) {
   STEP_PROFILE_END("URL Set -> Rendered");
   STEP_PROFILE_END("Start -> Launch Completed");
   LOGGER(DEBUG) << "Rendered";
+  splash_screen_->HideSplashScreen();
+
 }
 
 void WebApplication::LaunchInspector(common::AppControl* appcontrol) {
