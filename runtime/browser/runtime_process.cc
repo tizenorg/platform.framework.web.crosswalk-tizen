@@ -21,6 +21,13 @@
 #include "common/profiler.h"
 #include "runtime/browser/runtime.h"
 
+const char* kChromiumFlags[] = {
+  "no-sandbox",
+  "enable-file-cookies",
+  "allow-file-access-from-files",
+  "allow-universal-access-from-files",
+};
+
 int main(int argc, char* argv[]) {
   STEP_PROFILE_START("Start -> Launch Completed");
   STEP_PROFILE_START("Start -> OnCreate");
@@ -30,16 +37,11 @@ int main(int argc, char* argv[]) {
   // Default behavior, run as runtime.
   LOGGER(INFO) << "Runtime process has been created.";
   ewk_init();
-  char* chromium_arg_options[] = {
-    argv[0],
-    const_cast<char*>("--no-sandbox"),
-    const_cast<char*>("--enable-file-cookies"),
-    const_cast<char*>("--allow-file-access-from-files"),
-    const_cast<char*>("--allow-universal-access-from-files")
-  };
-  const int chromium_arg_cnt =
-      sizeof(chromium_arg_options) / sizeof(chromium_arg_options[0]);
-  ewk_set_arguments(chromium_arg_cnt, chromium_arg_options);
+  ewk_set_arguments(argc, argv);
+
+  int size = sizeof(kChromiumFlags) / sizeof(kChromiumFlags[0]);
+  for (int i = 0; i < size; ++i)
+    ewk_chromium_append_command_line_flag(kChromiumFlags[i]);
 
   int ret = 0;
   // Runtime's destructor should be called before ewk_shutdown()
