@@ -19,6 +19,7 @@
 
 #include <app_control.h>
 #include <bundle.h>
+#include <bundle_internal.h>
 #include <map>
 #include <memory>
 #include <string>
