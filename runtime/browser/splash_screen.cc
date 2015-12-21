@@ -150,11 +150,11 @@ std::pair<int, int> SplashScreen::GetDimensions() {
   int w, h;
 #if defined(HAVE_X11)
   uint16_t pid = getpid();
-  ecore_x_window_prop_property_set(elm_win_xwindow_get(window_.evas_object()),
+  ecore_x_window_prop_property_set(elm_win_xwindow_get(window_->evas_object()),
                                    ECORE_X_ATOM_NET_WM_PID,
                                    ECORE_X_ATOM_CARDINAL, 32, &pid, 1);
   ecore_x_vsync_animator_tick_source_set(
-      elm_win_xwindow_get(window_.evas_object()));
+      elm_win_xwindow_get(window_->evas_object()));
   ecore_x_window_size_get(ecore_x_window_root_first_get(), &w, &h);
 #elif defined(HAVE_WAYLAND)
   ecore_wl_screen_size_get(&w, &h);
