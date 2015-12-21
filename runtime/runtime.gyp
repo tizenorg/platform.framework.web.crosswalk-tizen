@@ -37,15 +37,11 @@
         'browser/notification_manager.h',
         'browser/notification_manager.cc',
       ],
-      'defines': [
-        'HAVE_WAYLAND',
-      ],
       'variables': {
         'packages': [
           'capi-appfw-application',
           'chromium-efl',
           'ecore',
-          'ecore-wayland',
           'efl-extension',
           'elementary',
           'deviced',
@@ -53,7 +49,15 @@
           'manifest-handlers',
           'notification',
         ],
-      },
+       'conditions': [
+         ['window_system== "X11"', {
+           'packages': ['ecore-x'],
+         }],
+         ['window_system== "Wayland"', {
+           'packages': ['ecore-wayland'],
+         }],
+       ],
+     },
     }, # end of target 'xwalk_runtime'
     {
       'target_name': 'xwalk_injected_bundle',

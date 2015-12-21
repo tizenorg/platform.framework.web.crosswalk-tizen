@@ -3,12 +3,19 @@
     'build_type%': 'Debug',
     'extension_path%': '<(extension_path)',
     'injected_bundle_path%': '<(injected_bundle_path)',
+    'window_system%': '<(window_system)',
   },
   'target_defaults': {
     'variables': {
       'build_type%': '<(build_type)',
     },
     'conditions': [
+      ['window_system== "X11"', {
+        'defines': ['HAVE_X11'],
+      }],
+      ['window_system=="Wayland"', {
+        'defines': ['HAVE_WAYLAND'],
+      }],
       ['build_type== "Debug"', {
         'defines': ['_DEBUG', 'TIZEN_DEBUG_ENABLE', ],
         'cflags': [ '-O0', '-g', ],

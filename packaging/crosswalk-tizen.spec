@@ -14,14 +14,6 @@ URL:        https://www.tizen.org
 Source0:    %{name}-%{version}.tar.gz
 Source1001: %{name}.manifest
 
-################ disable builds in X11 repos #################
-# currently, crosswalk-tizen is not needed on X11 profiles
-# see TINF-965
-%if %{with x}
-ExclusiveArch:
-%endif
-##############################################################
-
 ########## disable builds in wearable profile ################
 # currently, crosswalk-tizen doesn't support wearable profile
 %if "%{?profile}" == "wearable"
@@ -44,7 +36,11 @@ BuildRequires: pkgconfig(chromium-efl)
 BuildRequires: pkgconfig(deviced)
 BuildRequires: pkgconfig(dlog)
 BuildRequires: pkgconfig(ecore)
+%if %{with x}
+BuildRequires: pkgconfig(ecore-x)
+%else
 BuildRequires: pkgconfig(ecore-wayland)
+%endif
 BuildRequires: pkgconfig(efl-extension)
 BuildRequires: pkgconfig(elementary)
 BuildRequires: pkgconfig(gio-2.0)
@@ -74,6 +70,13 @@ GYP_OPTIONS="--depth=."
 GYP_OPTIONS="$GYP_OPTIONS -Dbuild_type=Debug"
 %else
 GYP_OPTIONS="$GYP_OPTIONS -Dbuild_type=Release"
+%endif
+
+# Wayland/X11 build
+%if %{with x}
+GYP_OPTIONS="$GYP_OPTIONS -Dwindow_system=X11"
+%else
+GYP_OPTIONS="$GYP_OPTIONS -Dwindow_system=Wayland"
 %endif
 
 # Extension Path
