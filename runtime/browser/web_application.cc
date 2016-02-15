@@ -346,9 +346,8 @@ void WebApplication::Launch(std::unique_ptr<common::AppControl> appcontrol) {
   WebView* view = new WebView(window_, ewk_context_);
   SetupWebView(view);
 
-  // send widget info to injected bundle
-  ewk_send_widget_info(ewk_context_, appid_.c_str(), elm_config_scale_get(),
-                       elm_theme_get(NULL), "");
+  // set widget app id for injected bundle
+  ewk_context_tizen_app_id_set(ewk_context_, appid_.c_str());
 
   std::unique_ptr<common::ResourceManager::Resource> res =
       resource_manager_->GetStartResource(appcontrol.get());

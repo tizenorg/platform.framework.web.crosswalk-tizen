@@ -73,6 +73,10 @@ class BundleGlobalData {
 };
 }  //  namespace runtime
 
+extern "C" unsigned int DynamicPluginVersion(void) {
+  return 1;
+}
+
 extern "C" void DynamicSetWidgetInfo(const char* tizen_id) {
   SCOPE_PROFILE();
   LOGGER(DEBUG) << "InjectedBundle::DynamicSetWidgetInfo !!" << tizen_id;
@@ -86,12 +90,9 @@ extern "C" void DynamicSetWidgetInfo(const char* tizen_id) {
   STEP_PROFILE_END("Initialize XWalkExtensionRendererController");
 }
 
-extern "C" void DynamicPluginStartSession(const char* tizen_id,
+extern "C" void DynamicPluginStartSession(const char* tizen_app_id,
                                           v8::Handle<v8::Context> context,
                                           int routing_handle,
-                                          double /*scale*/,
-                                          const char* /*bundle*/,
-                                          const char* /*theme*/,
                                           const char* base_url) {
   SCOPE_PROFILE();
 
@@ -99,7 +100,7 @@ extern "C" void DynamicPluginStartSession(const char* tizen_id,
   extensions::XWalkModuleSystem::SetModuleSystemInContext(
       std::unique_ptr<extensions::XWalkModuleSystem>(), context);
 
-  LOGGER(DEBUG) << "InjectedBundle::DynamicPluginStartSession !!" << tizen_id;
+  LOGGER(DEBUG) << "InjectedBundle::DynamicPluginStartSession !!" << tizen_app_id;
   if (base_url == NULL || common::utils::StartsWith(base_url, "http")) {
     LOGGER(ERROR) << "External url not allowed plugin loading.";
     return;
