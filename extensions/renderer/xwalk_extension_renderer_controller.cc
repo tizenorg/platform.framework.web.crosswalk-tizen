@@ -25,13 +25,19 @@ namespace {
 void CreateExtensionModules(XWalkExtensionClient* client,
                             XWalkModuleSystem* module_system) {
   SCOPE_PROFILE();
+  const XWalkExtensionClient::ExtensionAPIMap& extensions =
+      client->extension_apis();
+  auto it = extensions.begin();
+  for (; it != extensions.end(); ++it) {
+    XWalkExtensionClient::ExtensionCodePoints* codepoint = it->second;
 
-  auto extensions = client->GetExtensions();
-  for (auto it = extensions.begin(); it != extensions.end(); ++it) {
     std::unique_ptr<XWalkExtensionModule> module(
-        new XWalkExtensionModule(client, module_system, it->first));
+        new XWalkExtensionModule(client,
+              module_system,
+              it->first,
+              codepoint->api));
     module_system->RegisterExtensionModule(
-        std::move(module), it->second->entry_points());
+        std::move(module), codepoint->entry_points);
   }
 }
 
@@ -77,8 +83,9 @@ void XWalkExtensionRendererController::WillReleaseScriptContext(
   XWalkModuleSystem::ResetModuleSystemFromContext(context);
 }
 
-void XWalkExtensionRendererController::InitializeExtensions() {
-  extensions_client_->Initialize();
+bool XWalkExtensionRendererController::InitializeExtensions(
+    const std::string& appid) {
+  return extensions_client_->Initialize(appid);
 }
 
 }  // namespace extensions

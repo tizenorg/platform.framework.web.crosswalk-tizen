@@ -11,17 +11,12 @@
 #include <string>
 #include <vector>
 
-#include "extensions/common/xwalk_extension.h"
-#include "extensions/common/xwalk_extension_instance.h"
-#include "extensions/common/xwalk_extension_manager.h"
+#include "common/dbus_client.h"
 
 namespace extensions {
 
 class XWalkExtensionClient {
  public:
-  typedef std::map<std::string, XWalkExtension*> ExtensionMap;
-  typedef std::map<std::string, XWalkExtensionInstance*> InstanceMap;
-
   struct InstanceHandler {
     virtual void HandleMessageFromNative(const std::string& msg) = 0;
    protected:
@@ -30,11 +25,6 @@ class XWalkExtensionClient {
 
   XWalkExtensionClient();
   virtual ~XWalkExtensionClient();
-
-  void Initialize();
-
-  XWalkExtension* GetExtension(const std::string& extension_name);
-  ExtensionMap GetExtensions();
 
   std::string CreateInstance(const std::string& extension_name,
                              InstanceHandler* handler);
@@ -45,9 +35,23 @@ class XWalkExtensionClient {
   std::string SendSyncMessageToNative(const std::string& instance_id,
                                       const std::string& msg);
 
+  bool Initialize(const std::string& appid);
+
+  struct ExtensionCodePoints {
+    std::string api;
+    std::vector<std::string> entry_points;
+  };
+
+  typedef std::map<std::string, ExtensionCodePoints*> ExtensionAPIMap;
+  const ExtensionAPIMap& extension_apis() const { return extension_apis_; }
+  std::string GetExtensionJavascriptAPICode(const std::string& name);
+
  private:
-  XWalkExtensionManager manager_;
-  InstanceMap instances_;
+  void HandleSignal(const std::string& signal_name, GVariant* parameters);
+
+  ExtensionAPIMap extension_apis_;
+  std::map<std::string, InstanceHandler*> handlers_;
+  common::DBusClient dbus_extension_client_;
 };
 
 }  // namespace extensions

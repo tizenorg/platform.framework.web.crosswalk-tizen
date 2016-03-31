@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-#include "extensions/common/xwalk_extension_instance.h"
+#include "extensions/extension/xwalk_extension_instance.h"
 #include "extensions/public/XW_Extension.h"
 #include "extensions/public/XW_Extension_SyncMessage.h"
 
@@ -37,16 +37,33 @@ class XWalkExtension {
 
   bool Initialize();
   XWalkExtensionInstance* CreateInstance();
-  std::string GetJavascriptCode();
 
   std::string name() const { return name_; }
+
+  std::string javascript_api() const { return javascript_api_; }
 
   const StringVector& entry_points() const {
     return entry_points_;
   }
 
+  bool use_trampoline() const {
+    return use_trampoline_;
+  }
+
   bool lazy_loading() const {
     return lazy_loading_;
+  }
+
+  void set_name(const std::string& name) {
+    name_ = name;
+  }
+
+  void set_javascript_api(const std::string& javascript_api) {
+    javascript_api_ = javascript_api;
+  }
+
+  void set_use_trampoline(bool use_trampoline) {
+    use_trampoline_ = use_trampoline;
   }
 
  private:
@@ -64,6 +81,7 @@ class XWalkExtension {
   std::string name_;
   std::string javascript_api_;
   StringVector entry_points_;
+  bool use_trampoline_;
   bool lazy_loading_;
 
   XWalkExtensionDelegate* delegate_;
