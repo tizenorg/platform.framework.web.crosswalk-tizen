@@ -42,10 +42,6 @@ NativeWindow::~NativeWindow() {
 }
 
 void NativeWindow::Initialize() {
-  if (initialized_) {
-    LOGGER(DEBUG) << "already initialized";
-    return;
-  }
   // window
   window_ = CreateWindowInternal();
   elm_win_conformant_set(window_, EINA_TRUE);
