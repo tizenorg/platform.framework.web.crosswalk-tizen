@@ -56,7 +56,8 @@ cp %{SOURCE1001} .
 
 %build
 export GYP_GENERATORS='ninja'
-GYP_OPTIONS="--depth=."
+GYP_OPTIONS="--depth=.
+-Dextension_host_os=%{profile}"
 
 # BuildType: Debug / Release
 %if 0%{?tizen_build_devel_mode}
