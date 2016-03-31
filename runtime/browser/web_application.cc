@@ -655,6 +655,7 @@ void WebApplication::OnLowMemory() {
   ewk_context_notify_low_memory(ewk_context_);
 }
 
+#ifdef PROFILE_WEARABLE
 void WebApplication::OnRotaryEvent(WebView* /*view*/,
                                    Eext_Rotary_Event_Info* info) {
   LOGGER(DEBUG) << "OnRotaryEvent";
@@ -676,6 +677,7 @@ void WebApplication::OnRotaryEvent(WebView* /*view*/,
   if (view_stack_.size() > 0 && view_stack_.front() != NULL)
     view_stack_.front()->EvalJavascript(kRotaryEventScript.c_str());
 }
+#endif // PROFILE_WEARABLE
 
 bool WebApplication::OnContextMenuDisabled(WebView* /*view*/) {
   return !(app_data_->setting_info() != NULL

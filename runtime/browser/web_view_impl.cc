@@ -199,7 +199,9 @@ void WebViewImpl::Initialize() {
   InitCertificateAllowCallback();
   InitPopupWaitCallback();
   InitUsermediaCallback();
+#ifdef PROFILE_WEARABLE
   InitRotaryEventCallback();
+#endif // PROFILE_WEARABLE
 
   Ewk_Settings* settings = ewk_view_settings_get(ewk_view_);
   ewk_settings_scripts_can_open_windows_set(settings, EINA_TRUE);
@@ -826,6 +828,7 @@ void WebViewImpl::InitUsermediaCallback() {
   ewk_view_user_media_permission_callback_set(ewk_view_, callback, this);
 }
 
+#ifdef PROFILE_WEARABLE
 void WebViewImpl::InitRotaryEventCallback() {
   auto rotary_callback = [](void* user_data,
                          Evas_Object* /*obj*/,
@@ -840,6 +843,7 @@ void WebViewImpl::InitRotaryEventCallback() {
   eext_rotary_object_event_callback_add(ewk_view_, rotary_callback, this);
   eext_rotary_object_event_activated_set(ewk_view_, EINA_TRUE);
 }
+#endif // PROFILE_WEARABLE
 
 std::string WebViewImpl::GetUrl() {
   return std::string(ewk_view_url_get(ewk_view_));
