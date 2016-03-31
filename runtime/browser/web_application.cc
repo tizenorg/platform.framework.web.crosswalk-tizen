@@ -25,7 +25,6 @@
 #include <memory>
 #include <sstream>
 #include <vector>
-#include <efl_extension.h>
 
 #include "common/application_data.h"
 #include "common/app_db.h"
@@ -655,8 +654,9 @@ void WebApplication::OnLowMemory() {
   ewk_context_notify_low_memory(ewk_context_);
 }
 
+#ifdef PROFILE_WEARABLE
 void WebApplication::OnRotaryEvent(WebView* /*view*/,
-                                   Eext_Rotary_Event_Info* info) {
+                                   RotaryEventType type) {
   LOGGER(DEBUG) << "OnRotaryEvent";
   std::stringstream script;
   script
@@ -665,7 +665,7 @@ void WebApplication::OnRotaryEvent(WebView* /*view*/,
     << "var __detail = {};\n"
     << "__event.initCustomEvent(\"rotarydetent\", true, true, __detail);\n"
     << "__event.detail.direction = \""
-    << (info->direction == EEXT_ROTARY_DIRECTION_CLOCKWISE ? "CW" : "CCW")
+    << (type == RotaryEventType::CLOCKWISE ? "CW" : "CCW")
     << "\";\n"
     << "document.dispatchEvent(__event);\n"
     << "\n"
@@ -676,6 +676,7 @@ void WebApplication::OnRotaryEvent(WebView* /*view*/,
   if (view_stack_.size() > 0 && view_stack_.front() != NULL)
     view_stack_.front()->EvalJavascript(kRotaryEventScript.c_str());
 }
+#endif // PROFILE_WEARABLE
 
 bool WebApplication::OnContextMenuDisabled(WebView* /*view*/) {
   return !(app_data_->setting_info() != NULL

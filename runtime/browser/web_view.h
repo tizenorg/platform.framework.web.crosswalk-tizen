@@ -21,7 +21,6 @@
 #include <ewk_chromium.h>
 #include <functional>
 #include <string>
-#include <efl_extension.h>
 
 #include "runtime/browser/native_window.h"
 
@@ -29,6 +28,11 @@ class Ewk_Context;
 
 namespace runtime {
 class WebViewImpl;
+
+enum class RotaryEventType {
+  CLOCKWISE,  // Rotary is rotated clockwise direction
+  COUNTER_CLOCKWISE  // Rotary is rotated counter clockwise direction
+};
 
 class WebView {
  public:
@@ -88,9 +92,11 @@ class WebView {
         WebView* /*view*/,
         const std::string& /*url*/,
         std::function<void(bool)> /*result_handler*/) {}
+#ifdef PROFILE_WEARABLE
     virtual void OnRotaryEvent(
         WebView* /*view*/,
-        Eext_Rotary_Event_Info* info) {}
+        RotaryEventType /*type*/) {}
+#endif // PROFILE_WEARABLE
   };
 
   WebView(NativeWindow* window, Ewk_Context* context);
