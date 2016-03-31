@@ -88,9 +88,11 @@ class WebView {
         WebView* /*view*/,
         const std::string& /*url*/,
         std::function<void(bool)> /*result_handler*/) {}
+#ifdef PROFILE_WEARABLE
     virtual void OnRotaryEvent(
         WebView* /*view*/,
         Eext_Rotary_Event_Info* info) {}
+#endif // PROFILE_WEARABLE
   };
 
   WebView(NativeWindow* window, Ewk_Context* context);
