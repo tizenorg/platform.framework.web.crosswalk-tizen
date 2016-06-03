@@ -924,6 +924,7 @@ class NinjaWriter:
           rpath += self.toolset
         ldflags.append('-Wl,-rpath=\$$ORIGIN/%s' % rpath)
         ldflags.append('-Wl,-rpath-link=%s' % rpath)
+        ldflags.append('-Wl,--allow-shlib-undefined')
     self.WriteVariableList('ldflags',
                            gyp.common.uniquer(map(self.ExpandSpecial,
                                                   ldflags)))

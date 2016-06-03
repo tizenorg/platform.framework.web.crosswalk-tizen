@@ -83,6 +83,9 @@ Crosswalk Runtime and AppShell for Tizen 3.0 and later
 cp %{SOURCE1001} .
 
 %build
+export CFLAGS+=" -fcommon "
+export CXXLAGS+=" -fcommon "
+export LDFLAGS+=" -fcommon -Wl,--allow-shlib-undefined "
 export GYP_GENERATORS='ninja'
 GYP_OPTIONS="--depth=.
 -Dprofile=%{profile}"
@@ -107,7 +110,7 @@ GYP_OPTIONS="$GYP_OPTIONS -Dinjected_bundle_path=%{injected_bundle_path}"
 
 # Build
 ./tools/gyp/gyp $GYP_OPTIONS xwalk_tizen.gyp
-ninja -C out/Default %{?_smp_mflags}
+ldflags=-Wl,--allow-shlib-undefined ninja -C out/Default %{?_smp_mflags} -v
 
 %install
 

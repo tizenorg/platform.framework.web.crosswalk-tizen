@@ -41,6 +41,7 @@
       ],
       'cflags': [
         '-fvisibility=default',
+        '-fcommon',
       ],
       'variables': {
         'packages': [

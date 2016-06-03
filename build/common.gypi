@@ -43,6 +43,7 @@
       '-std=c++0x',
       '-fPIC',
       '-fvisibility=hidden',
+      '-fcommon',
       '-Wall',
     ],
     'libraries' : [
