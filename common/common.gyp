@@ -1,4 +1,7 @@
 {
+  'variables': {
+    'pkg-config': 'pkg-config',
+  },
   'includes':[
     '../build/common.gypi',
   ],
@@ -69,6 +72,23 @@
             'dlog',
           ],
         },
+      },
+    },
+    {
+      'target_name': 'v8',
+      'type': 'none',
+      'direct_dependent_settings': {
+        'cflags': [
+          '<!@(<(pkg-config) --cflags v8)',
+        ],
+      },
+      'link_settings': {
+        'ldflags': [
+          '<!@(<(pkg-config) --libs-only-L --libs-only-other v8)',
+        ],
+        'libraries': [
+          '<!@(<(pkg-config) --libs v8)',
+        ],
       },
     },
   ],

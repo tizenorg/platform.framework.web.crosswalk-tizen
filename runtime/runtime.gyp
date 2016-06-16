@@ -7,6 +7,7 @@
       'target_name': 'xwalk_runtime',
       'type': 'executable',
       'dependencies': [
+        '../common/common.gyp:v8',
         '../common/common.gyp:xwalk_tizen_common',
         '../extensions/extensions.gyp:xwalk_extension_shared',
         'resources/resources.gyp:xwalk_runtime_resources',
@@ -112,6 +113,7 @@
       'target_name': 'xwalk_injected_bundle',
       'type': 'shared_library',
       'dependencies': [
+        '../common/common.gyp:v8',
         '../common/common.gyp:xwalk_tizen_common',
         '../extensions/extensions.gyp:xwalk_extension_shared',
       ],

@@ -7,6 +7,7 @@
       'target_name': 'xwalk_extension_shared',
       'type': 'shared_library',
       'dependencies': [
+        '../common/common.gyp:v8',
         '../common/common.gyp:xwalk_tizen_common',
       ],
       'sources': [
