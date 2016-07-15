@@ -131,7 +131,9 @@ int real_main(int argc, char* argv[]) {
     ret = runtime->Exec(argc, argv);
     runtime.reset();
   }
+  LOGGER(ERROR) << "@@@@@@@@@@@@@@@@ ewk_shutdown START @@@@@@@@@@@@@@@@";
   ewk_shutdown();
+  LOGGER(ERROR) << "@@@@@@@@@@@@@@@@ ewk_shutdown END @@@@@@@@@@@@@@@@";
   exit(ret);
 
   return EXIT_SUCCESS;
